@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import { trpc } from '../../utils/trpc';
-import { useEffect } from 'react';
 import Loading from '../../components/Loading';
 
 const SingleUser = () => {

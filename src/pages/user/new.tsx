@@ -1,7 +1,7 @@
 import { User } from '@prisma/client';
 import { useRouter } from 'next/router';
 import { trpc } from '../../utils/trpc';
-import React, { useState } from 'react';
+import React from 'react';
 import FormItem, { FormItemProps } from '../../components/FormItem';
 import { CreateUserInput } from '../../schema/user.schema';
 import { useUserMeta } from '../../hooks/useUserMeta';

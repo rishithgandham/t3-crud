@@ -21,7 +21,7 @@ const getBaseUrl = () => {
 };
 
 export default withTRPC<AppRouter>({
-  config({ ctx }) {
+  config() {
     const url = `${getBaseUrl()}/api/trpc`;
     const links = [
       loggerLink(),

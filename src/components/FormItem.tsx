@@ -20,7 +20,7 @@ const FormItem = ({
           type="text"
           value={value || ''}
           placeholder={placeHolder}
-          className="border-2 p-4 w-1/2 rounded-xl shadow-xl border-gray-200 text-center"
+          className="border-2 p-4 w-full rounded-xl shadow-xl border-gray-200 text-center"
           onChange={onChange}
         />
       </div>

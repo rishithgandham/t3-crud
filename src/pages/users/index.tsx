@@ -6,6 +6,7 @@ import { trpc } from '../../utils/trpc';
 function UserListingPage() {
   const router = useRouter();
   const { data, isLoading, refetch } = trpc.useQuery(['users.get-all']);
+  console.log(typeof refetch);
 
   const goToCreate = () => router.push('/user/new');
 
@@ -21,8 +22,8 @@ function UserListingPage() {
           </p>
           <div className="flex justify-center">
             <ul className="w-full border border-gray-200 rounded-xl">
-              {data?.map(user => (
-                <ListGroupLi refetch={refetch} user={user} />
+              {data?.map((user, idx) => (
+                <ListGroupLi refetch={refetch} key={idx} user={user} />
               ))}
             </ul>
           </div>

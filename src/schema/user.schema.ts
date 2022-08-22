@@ -1,4 +1,4 @@
-import z, { TypeOf } from 'zod';
+import z from 'zod';
 
 export const createUserSchema = z.object({
   firstName: z.string(),

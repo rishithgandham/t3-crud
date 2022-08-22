@@ -30,8 +30,6 @@ const UpdateUser = () => {
     update.mutate(input);
   };
 
-  const goToUsers = () => router.push('/users/');
-
   const inputs: Array<FormItemProps> = [
     {
       label: 'First Name',

@@ -5,6 +5,7 @@ import { trpc } from '../utils/trpc';
 
 export interface ListGroupLiProps {
   user: User;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   refetch: any;
 }
 
@@ -16,7 +17,9 @@ const ListGroupLi = ({
   const goToUpdate = () => router.push(`/user/update/${id}`);
 
   const { mutate } = trpc.useMutation('users.delete-user', {
-    onSuccess: data => refetch(),
+    onSuccess: () => {
+      refetch();
+    },
   });
 
   const handleDelete = () => {
