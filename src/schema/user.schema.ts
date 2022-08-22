@@ -12,7 +12,8 @@ export const updateUserSchema = z.object({
   id: z.string().uuid(),
 });
 
-export type UserInput = z.TypeOf<typeof createUserSchema>;
+export type CreateUserInput = z.TypeOf<typeof createUserSchema>;
+export type UpdateUserInput = z.TypeOf<typeof updateUserSchema>;
 
 const singleUserSchema = z.object({
   id: z.string().uuid(),
@@ -20,3 +21,5 @@ const singleUserSchema = z.object({
 
 export const getSingleUserSchema = singleUserSchema;
 export const deleteSingleUserSchema = singleUserSchema;
+
+export type DeleteUserInput = z.TypeOf<typeof deleteSingleUserSchema>;

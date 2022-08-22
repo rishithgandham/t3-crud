@@ -1,12 +1,18 @@
-import { User } from '@prisma/client';
 import { useRouter } from 'next/router';
-import { trpc } from '../../utils/trpc';
-import React, { useState } from 'react';
-import FormItem, { FormItemProps } from '../../components/FormItem';
-import { CreateUserInput } from '../../schema/user.schema';
-import { useUserMeta } from '../../hooks/useUserMeta';
+import FormItem, { FormItemProps } from '../../../components/FormItem';
+import Loading from '../../../components/Loading';
+import { useUserMeta } from '../../../hooks/useUserMeta';
+import { UpdateUserInput } from '../../../schema/user.schema';
+import { trpc } from '../../../utils/trpc';
 
-function NewUser() {
+const UpdateUser = () => {
+  const router = useRouter();
+  const id = router.query.id as string;
+
+  const update = trpc.useMutation(['users.update-user'], {
+    onSuccess: user => router.push(`/user/${user.id}`),
+  });
+
   const {
     firstName,
     setFirstName,
@@ -16,42 +22,34 @@ function NewUser() {
     setJobTitle,
   } = useUserMeta();
 
-  const createOnSuccess = (user: User) => {
-    console.log(user);
-    router.push(`/user/${user.id}`);
+  const { data, isLoading } = trpc.useQuery(['users.get-user', { id }]);
+  if (isLoading) return <Loading />;
+  if (!data) router.push('/users/');
+
+  const handleSubmit = (input: UpdateUserInput) => {
+    update.mutate(input);
   };
 
-  const router = useRouter();
-  const { mutate } = trpc.useMutation(['users.create-user'], {
-    onSuccess: createOnSuccess,
-    onError: err => {
-      console.log(err);
-      router.push('/users/');
-    },
-  });
-
-  const handleSubmit = (input: CreateUserInput) => {
-    mutate(input);
-  };
+  const goToUsers = () => router.push('/users/');
 
   const inputs: Array<FormItemProps> = [
     {
       label: 'First Name',
-      placeHolder: 'Enter the users first name',
+      placeHolder: data?.firstName,
       onChange: (e: React.FormEvent<HTMLInputElement>) =>
         setFirstName(e.currentTarget.value),
       value: firstName,
     },
     {
       label: 'Last Name',
-      placeHolder: 'Enter the users last name',
+      placeHolder: data?.lastName,
       onChange: (e: React.FormEvent<HTMLInputElement>) =>
         setLastName(e.currentTarget.value),
       value: lastName,
     },
     {
       label: 'Job Title',
-      placeHolder: 'Enter the users job title',
+      placeHolder: data?.jobTitle,
       onChange: (e: React.FormEvent<HTMLInputElement>) =>
         setJobTitle(e.currentTarget.value),
       value: jobTitle,
@@ -63,7 +61,7 @@ function NewUser() {
       <div className="flex justify-center items-center h-full bg-cyan-50">
         <div className="text-center bg-white shadow-lg rounded-xl m-10 p-10 md:w-3/4 w-full h-4/5 border-2 border-indigo-500">
           <p className="font-semibold text-2xl text-indigo-500 m-10">
-            Create User
+            Update User
           </p>
           <div className="flex justify-center items-center text-center">
             <div className="text-center w-full">
@@ -79,7 +77,9 @@ function NewUser() {
               <button
                 className="p-3 font-semibold hover:translate-y-5 hover:scale-110 transition-all bg-indigo-200 rounded-full text-indigo-500"
                 disabled={!(firstName && lastName && jobTitle)}
-                onClick={() => handleSubmit({ firstName, jobTitle, lastName })}
+                onClick={() =>
+                  handleSubmit({ firstName, id, jobTitle, lastName })
+                }
               >
                 Submit
               </button>
@@ -89,6 +89,6 @@ function NewUser() {
       </div>
     </>
   );
-}
+};
 
-export default NewUser;
+export default UpdateUser;
