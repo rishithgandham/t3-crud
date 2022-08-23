@@ -6,8 +6,6 @@ import { trpc } from '../../utils/trpc';
 function UserListingPage() {
   const router = useRouter();
   const { data, isLoading, refetch } = trpc.useQuery(['users.get-all']);
-  console.log(typeof refetch);
-
   const goToCreate = () => router.push('/user/new');
 
   if (isLoading) return <Loading />;
