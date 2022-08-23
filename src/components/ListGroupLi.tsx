@@ -40,7 +40,11 @@ const ListGroupLi = ({
             </p>
           </div>
           <div className="text-center p-2">
-            <p className="font-semibold text-slate-500 ">{jobTitle}</p>
+            <p className="font-semibold text-slate-500 ">
+              {jobTitle.slice(0, 15) === jobTitle
+                ? jobTitle
+                : jobTitle.slice(0, 15).concat('...')}
+            </p>
           </div>
           <div className="text-center p-2">
             <button
